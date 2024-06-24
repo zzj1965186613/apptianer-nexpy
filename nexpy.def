@@ -1,0 +1,35 @@
+Bootstrap: localimage
+From: base.sif
+
+%arguments
+
+
+%files
+
+
+%post
+    apt -y update
+    apt -y install apt-utils
+    apt -y upgrade
+    apt -y autopurge
+    apt -y install pipx
+    cd /opt
+    pipx install  nexpy 
+    pipx install  pyqt5
+    pipx install pyqt5-tools
+    cp /root/.local/share/pipx/venvs/pyqt5/lib/python3.11/site-packages/* /root/.local/share/pipx/venvs/nexpy/lib/python3.11/site-packages -rf
+    cp /root/.local/share/pipx/venvs/pyqt5-tools/lib/python3.11/site-packages/* /root/.local/share/pipx/venvs/nexpy/lib/python3.11/site-packages -rf
+    rm /root/.local/share/pipx/venvs/pyqt5 -rf
+    rm /root/.local/share/pipx/venvs/pyqt5-tools -rf
+    ln -sf /usr/bin/python3 /usr/bin/python
+    cd /root/.local/share/pipx/venvs/nexpy/lib/python3.11/site-packages/
+    rm -rf numpy*
+    cp -rf /root/.local/share/pipx/venvs/numpy/lib/python3.11/site-packages/* ./
+%labels
+
+
+    
+%environment
+    export LC_ALL=C
+    export PATH=/root/.local/bin:$PATH
+
